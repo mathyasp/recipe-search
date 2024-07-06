@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const search = document.getElementById('search');
   const recipeList = document.getElementById('recipe-list');
   let currentPage = 1;
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   let results = []; 
   
   const recipes = new RecipeAPI();
@@ -13,16 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const endIndex = startIndex + itemsPerPage;
     const paginatedItems = recipes.slice(startIndex, endIndex);
     recipeList.innerHTML = ''; 
-    paginatedItems.forEach((hit, index) => {
+    paginatedItems.forEach(recipe => {
       const li = document.createElement('li');
+
+      const recipeThumbnail = document.createElement('img');
+      recipeThumbnail.src = recipe.thumbnailUrl;
+      li.appendChild(recipeThumbnail);
+
       const recipeName = document.createElement('h2');
-      recipeName.textContent = hit.recipe.label;
+      recipeName.textContent = recipe.name;
       li.appendChild(recipeName);
+
+      const stats = document.createElement('p');
+      stats.textContent = `Calories: ${recipe.calories}, Carbs: ${recipe.carbs}, Protein: ${recipe.protein}, Sugars: ${recipe.sugars}, Sodium: ${recipe.sodium}`;
+      li.appendChild(stats);
+
       const recipeLink = document.createElement('a');
-      recipeLink.href = hit.recipe.url;
+      recipeLink.href = recipe.url;
       recipeLink.textContent = "View Recipe";
       recipeLink.target = "_blank";
       li.appendChild(recipeLink);
+
       recipeList.appendChild(li);
     });
   };
@@ -32,8 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPage = 1; 
 
     const searchTerm = search.value;
-    const json = await recipes.getRecipes(searchTerm);
-    results = json.hits; 
+    results = await recipes.getRecipes(searchTerm); // Directly assign the result
     renderRecipes(results, currentPage);
   });
 

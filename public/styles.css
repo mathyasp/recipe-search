@@ -64,6 +64,14 @@ button {
   padding: 0.5rem;
 }
 
+#recipe-list li p {
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
 #pagination {
   display: flex;
   justify-content: center;
