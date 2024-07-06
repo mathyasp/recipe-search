@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Recipe Search App</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Recipe Search App</h1>
+      <form id="form">
+        <input type="text" id="search" placeholder="Search for a recipe">
+        <button type="submit">Search</button>
+      </form>
+      <div class="recipes">
+        <div id="pagination">
+          <button id="prevPage">Previous</button>
+          <span id="pageIndicator">Page 1</span>
+          <button id="nextPage">Next</button>
+        </div>
+        <ul id="recipe-list"></ul>
+      </div>
+    </div>
+    
+    <script src="recipeAPI.js"></script>
+    <script src="ui.js"></script>
+    <script src="app.js"></script>  
+  </body>
+</html>
