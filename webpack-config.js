@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-	entry: 'app.ts',
+	entry: './src/recipeAPI.ts',
 	module: {
 		rules: [
 			{

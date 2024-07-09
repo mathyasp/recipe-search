@@ -1,4 +1,6 @@
-const RecipeAPI = require('../public/recipeAPI.js');
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { RecipeAPI } = require('../src/recipeAPI');
 const api = new RecipeAPI();
 
 global.fetch = jest.fn();
