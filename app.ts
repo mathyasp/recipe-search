@@ -1,13 +1,15 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv';
+dotenv.config();
+import express, { Request, Response } from 'express';
+import fetch from 'node-fetch'; 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//Comment to test workflow
 app.use(express.json());
 app.use(express.static('public'));
 
-app.get('/api/recipes', async (req, res) => {
+app.get('/api/recipes', async (req: Request, res: Response) => {
   const searchTerm = req.query.q;
   const appId = process.env.RECIPE_APP_ID;
   const apiKey = process.env.RECIPE_API_KEY;

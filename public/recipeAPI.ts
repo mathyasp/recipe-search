@@ -1,5 +1,26 @@
-class RecipeAPI {
-  async getRecipes(searchTerm) {
+export interface Recipe {
+  url: string;
+  label: string;
+  images: {
+    THUMBNAIL: {
+      url: string;
+    };
+  };
+  calories: number;
+  totalNutrients: {
+    CHOCDF: { quantity: number; unit: string; };
+    PROCNT: { quantity: number; unit: string; };
+    SUGAR: { quantity: number; unit: string; };
+    NA: { quantity: number; unit: string; };
+  };
+}
+
+interface Hit {
+  recipe: Recipe;
+}
+
+export class RecipeAPI {
+  async getRecipes(searchTerm: string) {
     try {
       const res = await fetch(`/api/recipes?q=${searchTerm}`);
       if (!res.ok) {
@@ -13,7 +34,7 @@ class RecipeAPI {
     }
   }
 
-  processRecipes(hits) {
+  processRecipes(hits: Hit[]) {
     return hits.map(hit => {
       const { recipe } = hit;
       return {
@@ -29,5 +50,3 @@ class RecipeAPI {
     });
   }
 }
-
-module.exports = RecipeAPI;

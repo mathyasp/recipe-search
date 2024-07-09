@@ -1,14 +1,27 @@
+import { RecipeAPI } from './recipeAPI';
+
+interface ProcessedRecipe {
+  url: string;
+  name: string;
+  thumbnailUrl: string;
+  calories: string;
+  carbs: string;
+  protein: string;
+  sugars: string;
+  sodium: string;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('form');
-  const search = document.getElementById('search');
-  const recipeList = document.getElementById('recipe-list');
+  const form = document.getElementById('form') as HTMLFormElement;
+  const search = document.getElementById('search') as HTMLInputElement;
+  const recipeList = document.getElementById('recipe-list') as HTMLUListElement;
   let currentPage = 1;
   const itemsPerPage = 5;
-  let results = []; 
+  let results: ProcessedRecipe[] = []; 
   
   const recipes = new RecipeAPI();
 
-  const renderRecipes = (recipes, page) => {
+  const renderRecipes = (recipes: ProcessedRecipe[], page: number) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedItems = recipes.slice(startIndex, endIndex);
@@ -46,18 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
     results = await recipes.getRecipes(searchTerm); // Directly assign the result
     renderRecipes(results, currentPage);
   });
+  
+  const nextPageButton = document.getElementById('nextPage');
+  const prevPageButton = document.getElementById('prevPage');
+  const pageIndicator = document.getElementById('pageIndicator');
 
-  document.getElementById('nextPage').addEventListener('click', () => {
-    currentPage++;
-    renderRecipes(results, currentPage);
-    document.getElementById('pageIndicator').textContent = `Page ${currentPage}`;
-  });
-
-  document.getElementById('prevPage').addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
+  if (nextPageButton) {
+    nextPageButton.addEventListener('click', () => {
+      currentPage++;
       renderRecipes(results, currentPage);
-      document.getElementById('pageIndicator').textContent = `Page ${currentPage}`;
-    }
-  });
+      if (pageIndicator) pageIndicator.textContent = `Page ${currentPage}`;
+    });
+  }
+  
+  if (prevPageButton) {
+    prevPageButton.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderRecipes(results, currentPage);
+        if (pageIndicator) pageIndicator.textContent = `Page ${currentPage}`;
+      }
+    });
+  }
 });
