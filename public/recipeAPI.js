@@ -1,8 +1,20 @@
 class RecipeAPI {
   async getRecipes(searchTerm) {
-    const res = await fetch(`/api/recipes?q=${searchTerm}`);
-    const json = await res.json();
-    return json.hits.map(hit => {
+    try {
+      const res = await fetch(`/api/recipes?q=${searchTerm}`);
+      if (!res.ok) {
+        throw new Error('API request failed with status ' + res.status);
+      }
+      const json = await res.json();
+      return this.processRecipes(json.hits);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  processRecipes(hits) {
+    return hits.map(hit => {
       const { recipe } = hit;
       return {
         url: recipe.url,
@@ -17,3 +29,5 @@ class RecipeAPI {
     });
   }
 }
+
+module.exports = RecipeAPI;
